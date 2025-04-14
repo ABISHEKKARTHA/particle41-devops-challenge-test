@@ -25,7 +25,7 @@ variable "address_space" {
 variable "container_image" {
   description = "Docker image for the application"
   type        = string
-  default     = "youracrname.azurecr.io/simpletimeservice:latest"
+  default     = "abishekkartha/simpletimeservice:latest"  # Docker Hub image
 }
 
 variable "container_port" {

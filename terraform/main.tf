@@ -88,19 +88,6 @@ resource "azurerm_public_ip" "appgw" {
   }
 }
 
-# Container Registry
-resource "azurerm_container_registry" "acr" {
-  name                = "${var.project}${var.environment}acr"
-  resource_group_name = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
-  sku                 = "Standard"
-  admin_enabled       = true
-  tags = {
-    Environment = var.environment
-    Project     = var.project
-  }
-}
-
 # Network Profile for container instances
 resource "azurerm_network_profile" "aci" {
   name                = "${var.project}-${var.environment}-np"
@@ -128,7 +115,7 @@ resource "azurerm_container_group" "instance1" {
 
   container {
     name   = var.project
-    image  = var.container_image
+    image  = var.container_image  # Docker Hub image
     cpu    = var.container_cpu
     memory = var.container_memory
 
@@ -136,12 +123,6 @@ resource "azurerm_container_group" "instance1" {
       port     = var.container_port
       protocol = "TCP"
     }
-  }
-
-  image_registry_credential {
-    server   = azurerm_container_registry.acr.login_server
-    username = azurerm_container_registry.acr.admin_username
-    password = azurerm_container_registry.acr.admin_password
   }
 
   tags = {
@@ -161,7 +142,7 @@ resource "azurerm_container_group" "instance2" {
 
   container {
     name   = var.project
-    image  = var.container_image
+    image  = var.container_image  # Docker Hub image
     cpu    = var.container_cpu
     memory = var.container_memory
 
@@ -169,12 +150,6 @@ resource "azurerm_container_group" "instance2" {
       port     = var.container_port
       protocol = "TCP"
     }
-  }
-
-  image_registry_credential {
-    server   = azurerm_container_registry.acr.login_server
-    username = azurerm_container_registry.acr.admin_username
-    password = azurerm_container_registry.acr.admin_password
   }
 
   tags = {

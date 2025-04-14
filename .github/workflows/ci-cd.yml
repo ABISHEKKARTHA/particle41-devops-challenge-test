@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t abishekkartha/simpletimeservice . -f apps/Dockerfile
+          docker build -t abishekkartha/simpletimeservice . -f app/Dockerfile
         
       - name: Push Docker image to Docker Hub
         run: |
